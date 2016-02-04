@@ -103,3 +103,10 @@ footer {
   font-size: 11px;
   padding-top: 20px;
 }
+
+.gh {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 0;
+}
