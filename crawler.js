@@ -65,9 +65,6 @@ var steps = [
         };
       });
     });
-  },
-  function() {
-    page.render('example.png');
   }
 ];
 
