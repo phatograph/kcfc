@@ -17,7 +17,7 @@ let App = React.createClass({
   componentDidMount() {
     $.get('../data.json', (result) => {
       this.setState({
-        data: result
+        data: result.sort((a, b) => a.title.localeCompare(b.title))
       });
     })
   },
