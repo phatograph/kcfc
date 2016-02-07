@@ -78,9 +78,9 @@ setInterval(function() {
     }
     else {
       if (typeof result == 'object') {
-        var path = 'build/data.json';
+        var path = './build/data.json';
         var content = JSON.stringify(result);
-        fs.writeFile(path, content);
+        fs.write(path, content, 'w');
       }
 
       testindex++;
