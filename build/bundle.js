@@ -69,28 +69,55 @@
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _style = __webpack_require__(208);
+	var _classnames = __webpack_require__(208);
+
+	var _classnames2 = _interopRequireDefault(_classnames);
+
+	var _style = __webpack_require__(209);
 
 	var _style2 = _interopRequireDefault(_style);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var createBrowserHistory = __webpack_require__(212);
+	var createBrowserHistory = __webpack_require__(213);
 
 	var App = _react2.default.createClass({
 	  displayName: 'App',
 	  getInitialState: function getInitialState() {
 	    return {
-	      data: []
+	      dataOri: [],
+	      data: [],
+	      sorting: 'date'
 	    };
 	  },
 	  componentDidMount: function componentDidMount() {
 	    var _this = this;
 
-	    _jquery2.default.get('../data.json', function (result) {
+	    _jquery2.default.get('data.json', function (result) {
+	      result = result.filter(function (a) {
+	        return a.count.match(/\d+/)[0] > 0;
+	      });
+
 	      _this.setState({
+	        dataOri: result,
 	        data: result
 	      });
+	    });
+	  },
+	  _sort: function _sort(sorting, e) {
+	    e.preventDefault();
+
+	    var _data = this.state.dataOri.slice(0, this.state.dataOri.length);
+
+	    if (sorting == 'alpha') {
+	      _data = _data.sort(function (a, b) {
+	        return a.title.localeCompare(b.title);
+	      });
+	    }
+
+	    this.setState({
+	      data: _data,
+	      sorting: sorting
 	    });
 	  },
 	  render: function render() {
@@ -111,14 +138,36 @@
 	      ),
 	      _react2.default.createElement(
 	        'ul',
-	        null,
+	        { className: _style2.default.sorting },
+	        _react2.default.createElement(
+	          'li',
+	          null,
+	          _react2.default.createElement(
+	            'a',
+	            { href: '#', className: this.state.sorting == 'date' ? _style2.default.active : '', onClick: this._sort.bind(this, 'date') },
+	            'เรียงตามลำดับที่สร้าง'
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'li',
+	          null,
+	          _react2.default.createElement(
+	            'a',
+	            { href: '#', className: this.state.sorting == 'alpha' ? _style2.default.active : '', onClick: this._sort.bind(this, 'alpha') },
+	            'เรียงตามตัวอักษร'
+	          )
+	        )
+	      ),
+	      _react2.default.createElement(
+	        'ul',
+	        { className: _style2.default.data },
 	        this.state.data.map(function (d, i) {
 	          return _react2.default.createElement(
 	            'li',
 	            { key: i },
 	            _react2.default.createElement(
 	              'a',
-	              { href: d.url },
+	              { href: d.url, target: '_blank' },
 	              _react2.default.createElement(
 	                'div',
 	                { className: _style2.default.img },
@@ -126,7 +175,7 @@
 	              ),
 	              _react2.default.createElement(
 	                'div',
-	                null,
+	                { className: _style2.default.text },
 	                _react2.default.createElement(
 	                  'h4',
 	                  null,
@@ -136,6 +185,11 @@
 	                  'h3',
 	                  null,
 	                  d.name
+	                ),
+	                _react2.default.createElement(
+	                  'h5',
+	                  null,
+	                  d.count
 	                )
 	              )
 	            )
@@ -146,6 +200,11 @@
 	        'footer',
 	        null,
 	        '2016 © phatograph.com'
+	      ),
+	      _react2.default.createElement(
+	        'a',
+	        { className: _style2.default.gh, href: 'https://github.com/phatograph/kcfc', target: '_blank' },
+	        _react2.default.createElement('img', { src: 'https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67', alt: 'Fork me on GitHub', 'data-canonical-src': 'https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png' })
 	      )
 	    );
 	  }
@@ -33934,13 +33993,67 @@
 /* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	  Copyright (c) 2016 Jed Watson.
+	  Licensed under the MIT License (MIT), see
+	  http://jedwatson.github.io/classnames
+	*/
+	/* global define */
+
+	(function () {
+		'use strict';
+
+		var hasOwn = {}.hasOwnProperty;
+
+		function classNames () {
+			var classes = [];
+
+			for (var i = 0; i < arguments.length; i++) {
+				var arg = arguments[i];
+				if (!arg) continue;
+
+				var argType = typeof arg;
+
+				if (argType === 'string' || argType === 'number') {
+					classes.push(arg);
+				} else if (Array.isArray(arg)) {
+					classes.push(classNames.apply(null, arg));
+				} else if (argType === 'object') {
+					for (var key in arg) {
+						if (hasOwn.call(arg, key) && arg[key]) {
+							classes.push(key);
+						}
+					}
+				}
+			}
+
+			return classes.join(' ');
+		}
+
+		if (typeof module !== 'undefined' && module.exports) {
+			module.exports = classNames;
+		} else if (true) {
+			// register as 'classnames', consistent with npm package name
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+				return classNames;
+			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		} else {
+			window.classNames = classNames;
+		}
+	}());
+
+
+/***/ },
+/* 209 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(209);
+	var content = __webpack_require__(210);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(211)(content, {});
+	var update = __webpack_require__(212)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -33957,24 +34070,29 @@
 	}
 
 /***/ },
-/* 209 */
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(210)();
+	exports = module.exports = __webpack_require__(211)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "/* http://meyerweb.com/eric/tools/css/reset/ \n   v2.0 | 20110126\n   License: none (public domain)\n*/\nhtml, body, div, span, applet, object, iframe,\nh1, h2, h3, h4, h5, h6, p, blockquote, pre,\na, abbr, acronym, address, big, cite, code,\ndel, dfn, em, img, ins, kbd, q, s, samp,\nsmall, strike, strong, sub, sup, tt, var,\nb, u, i, center,\ndl, dt, dd, ol, ul, li,\nfieldset, form, label, legend,\ntable, caption, tbody, tfoot, thead, tr, th, td,\narticle, aside, canvas, details, embed,\nfigure, figcaption, footer, header, hgroup,\nmenu, nav, output, ruby, section, summary,\ntime, mark, audio, video {\n  margin: 0;\n  padding: 0;\n  border: 0;\n  font-size: 100%;\n  font: inherit;\n  vertical-align: baseline; }\n\n/* HTML5 display-role reset for older browsers */\narticle, aside, details, figcaption, figure,\nfooter, header, hgroup, menu, nav, section {\n  display: block; }\n\nbody {\n  line-height: 1; }\n\nol, ul {\n  list-style: none; }\n\nblockquote, q {\n  quotes: none; }\n\nblockquote:before, blockquote:after,\nq:before, q:after {\n  content: '';\n  content: none; }\n\ntable {\n  border-collapse: collapse;\n  border-spacing: 0; }\n\nbody {\n  font-family: 'Lato', sans-serif;\n  padding: 30px 10px;\n  background-color: #f1f1f1; }\n\nh1 {\n  font-family: 'Fjalla One', sans-serif;\n  text-align: center;\n  font-size: 24px; }\n\nh2 {\n  text-align: center;\n  padding-top: 5px; }\n\na {\n  text-decoration: none;\n  color: #000; }\n\n.style__container___3JYM8 {\n  margin: 0 auto; }\n  @media (min-width: 801px) {\n    .style__container___3JYM8 {\n      width: 800px; } }\n\nul {\n  padding-top: 20px;\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-flex-wrap: wrap;\n  -ms-flex-wrap: wrap;\n  flex-wrap: wrap; }\n  ul li {\n    background-color: #fff;\n    width: calc(33% - 5px*2 - 10px*2);\n    margin: 5px;\n    padding: 10px;\n    border-radius: 2px;\n    box-shadow: 0px 2px 2px 1px rgba(0, 0, 0, 0.2);\n    -webkit-transition: all 0.3s ease;\n    transition: all 0.3s ease; }\n    ul li:hover {\n      box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.6); }\n    ul li a {\n      display: -webkit-box;\n      display: -webkit-flex;\n      display: -ms-flexbox;\n      display: flex; }\n    @media (max-width: 640px) {\n      ul li {\n        width: calc(50% - 5px*2 - 10px*2); } }\n    ul li .style__img___umovG {\n      margin: 0 10px 0px 0;\n      width: 48px; }\n      ul li .style__img___umovG img {\n        max-width: 100%;\n        border-radius: 48px; }\n    ul li div h4 {\n      font-weight: bold;\n      font-size: 13px;\n      white-space: pre-line;\n      overflow-wrap: break-word; }\n    ul li div h3 {\n      font-size: 12px;\n      color: #777;\n      padding-top: 5px;\n      white-space: pre-line;\n      overflow-wrap: break-word; }\n\nfooter {\n  text-align: center;\n  color: #777;\n  font-size: 11px;\n  padding-top: 20px; }\n", ""]);
+	exports.push([module.id, "/* http://meyerweb.com/eric/tools/css/reset/ \n   v2.0 | 20110126\n   License: none (public domain)\n*/\nhtml, body, div, span, applet, object, iframe,\nh1, h2, h3, h4, h5, h6, p, blockquote, pre,\na, abbr, acronym, address, big, cite, code,\ndel, dfn, em, img, ins, kbd, q, s, samp,\nsmall, strike, strong, sub, sup, tt, var,\nb, u, i, center,\ndl, dt, dd, ol, ul, li,\nfieldset, form, label, legend,\ntable, caption, tbody, tfoot, thead, tr, th, td,\narticle, aside, canvas, details, embed,\nfigure, figcaption, footer, header, hgroup,\nmenu, nav, output, ruby, section, summary,\ntime, mark, audio, video {\n  margin: 0;\n  padding: 0;\n  border: 0;\n  font-size: 100%;\n  font: inherit;\n  vertical-align: baseline; }\n\n/* HTML5 display-role reset for older browsers */\narticle, aside, details, figcaption, figure,\nfooter, header, hgroup, menu, nav, section {\n  display: block; }\n\nbody {\n  line-height: 1; }\n\nol, ul {\n  list-style: none; }\n\nblockquote, q {\n  quotes: none; }\n\nblockquote:before, blockquote:after,\nq:before, q:after {\n  content: '';\n  content: none; }\n\ntable {\n  border-collapse: collapse;\n  border-spacing: 0; }\n\nbody {\n  font-family: 'Lato', sans-serif;\n  padding: 30px 10px;\n  background-color: #f1f1f1; }\n\nh1 {\n  font-family: 'Fjalla One', sans-serif;\n  text-align: center;\n  font-size: 24px; }\n\nh2 {\n  text-align: center;\n  padding-top: 5px; }\n\na {\n  text-decoration: none;\n  color: #000; }\n\n.style__container___3JYM8 {\n  margin: 0 auto; }\n  @media (min-width: 801px) {\n    .style__container___3JYM8 {\n      width: 800px; } }\n\n.style__sorting___3ydVY {\n  text-align: center; }\n  .style__sorting___3ydVY li {\n    display: inline-block;\n    background-color: #fff;\n    border-radius: 2px;\n    box-shadow: 0px 2px 2px 1px rgba(0, 0, 0, 0.2);\n    font-size: 11px;\n    margin: 20px 5px 0; }\n    .style__sorting___3ydVY li a {\n      display: block;\n      padding: 7px 15px;\n      color: #777; }\n      .style__sorting___3ydVY li a:hover {\n        background-color: #eee; }\n\n.style__active___1QS1c {\n  background-color: #e1e1e1 !important;\n  cursor: default; }\n\n.style__data___3U0KL {\n  padding-top: 10px;\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-flex-wrap: wrap;\n  -ms-flex-wrap: wrap;\n  flex-wrap: wrap; }\n  .style__data___3U0KL li {\n    background-color: #fff;\n    width: calc(33% - 7px*2);\n    margin: 7px;\n    border-radius: 2px;\n    box-shadow: 0px 2px 2px 1px rgba(0, 0, 0, 0.2);\n    -webkit-transition: box-shadow 0.3s ease;\n    transition: box-shadow 0.3s ease; }\n    .style__data___3U0KL li:hover {\n      box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.6); }\n    .style__data___3U0KL li a {\n      padding: 10px;\n      display: -webkit-box;\n      display: -webkit-flex;\n      display: -ms-flexbox;\n      display: flex; }\n    @media (max-width: 640px) {\n      .style__data___3U0KL li {\n        width: calc(50% - 7px*2); } }\n    .style__data___3U0KL li .style__img___umovG {\n      margin: 0 10px 0px 0;\n      width: 48px; }\n      .style__data___3U0KL li .style__img___umovG img {\n        max-width: 100%;\n        border-radius: 48px; }\n    .style__data___3U0KL li .style__text___OiqmB {\n      width: calc(100% - 10px - 48px); }\n    .style__data___3U0KL li div h4 {\n      font-weight: bold;\n      font-size: 13px;\n      white-space: pre-line;\n      overflow-wrap: break-word; }\n    .style__data___3U0KL li div h3 {\n      font-size: 12px;\n      color: #777;\n      padding-top: 5px;\n      white-space: pre-line;\n      overflow-wrap: break-word; }\n    .style__data___3U0KL li div h5 {\n      padding-top: 3px;\n      font-size: 11px; }\n\nfooter {\n  text-align: center;\n  color: #777;\n  font-size: 11px;\n  padding-top: 20px; }\n\n.style__gh___9KHjI {\n  position: absolute;\n  top: 0;\n  right: 0;\n  border: 0; }\n", ""]);
 
 	// exports
 	exports.locals = {
 		"container": "style__container___3JYM8",
-		"img": "style__img___umovG"
+		"sorting": "style__sorting___3ydVY",
+		"active": "style__active___1QS1c",
+		"data": "style__data___3U0KL",
+		"img": "style__img___umovG",
+		"text": "style__text___OiqmB",
+		"gh": "style__gh___9KHjI"
 	};
 
 /***/ },
-/* 210 */
+/* 211 */
 /***/ function(module, exports) {
 
 	/*
@@ -34030,7 +34148,7 @@
 
 
 /***/ },
-/* 211 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -34284,7 +34402,7 @@
 
 
 /***/ },
-/* 212 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';

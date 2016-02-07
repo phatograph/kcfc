@@ -6,6 +6,12 @@ var port        = 4000;
 
 app.use(express.static(static_path));
 
+app.get('/data', function (req, res) {
+  res.sendFile('data.json', {
+    root: static_path
+  });
+});
+
 app.get('/*', function (req, res) {
   res.sendFile('index.html', {
     root: static_path

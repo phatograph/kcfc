@@ -18,7 +18,7 @@ let App = React.createClass({
   },
 
   componentDidMount() {
-    $.get('../data.json', (result) => {
+    $.get('data.json', (result) => {
       result = result.filter((a) => a.count.match(/\d+/)[0] > 0);
 
       this.setState({
