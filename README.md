@@ -4,6 +4,7 @@ http://stackoverflow.com/questions/12607209/is-there-a-working-nodejs-phantomjs-
 https://github.com/srbartlett/heroku-buildpack-phantomjs-2.0
 
 +
+
 ES2015
 PostCSS
 React
@@ -11,4 +12,5 @@ Webpack
 CSS Modules
 
 -
+
 Flux / Redux
