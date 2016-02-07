@@ -51,6 +51,7 @@ let App = React.createClass({
         <ul className={style.sorting}>
           <li><a href="#" className={this.state.sorting == 'date' ? style.active : ''} onClick={this._sort.bind(this, 'date')}>เรียงตามลำดับที่สร้าง</a></li>
           <li><a href="#" className={this.state.sorting == 'alpha' ? style.active : ''} onClick={this._sort.bind(this, 'alpha')}>เรียงตามตัวอักษร</a></li>
+          <li><a href="pv49.jpg" target="_blank">ดูตัวอย่างการใช้</a></li>
         </ul>
         <ul className={style.data}>
           {this.state.data.map((d, i) => {
