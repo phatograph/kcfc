@@ -80,7 +80,7 @@ setInterval(function() {
       if (typeof result == 'object') {
         var path = 'build/data.json';
         var content = JSON.stringify(result);
-        fs.write(path, content, 'w');
+        fs.writeFile(path, content);
       }
 
       testindex++;
