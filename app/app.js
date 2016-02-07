@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import ReactRouter from 'react-router';
 import { Router, Route, Link } from 'react-router';
 import $ from 'jquery';
+import classnames from 'classnames';
 let createBrowserHistory = require('history/lib/createBrowserHistory');
 
 import style from './../css/style.css';
@@ -10,18 +11,36 @@ import style from './../css/style.css';
 let App = React.createClass({
   getInitialState() {
     return {
-      data: []
+      dataOri: [],
+      data: [],
+      sorting: 'date'
     };
   },
 
   componentDidMount() {
     $.get('../data.json', (result) => {
+      result = result.filter((a) => a.count.match(/\d+/)[0] > 0);
+
       this.setState({
+        dataOri: result,
         data: result
-          .filter((a) => a.count.match(/\d+/)[0] > 0)
-          .sort((a, b) => a.title.localeCompare(b.title))
       });
     })
+  },
+
+  _sort(sorting, e) {
+    e.preventDefault();
+
+    let _data = this.state.dataOri.slice(0, this.state.dataOri.length);
+
+    if (sorting == 'alpha') {
+      _data = _data.sort((a, b) => a.title.localeCompare(b.title))
+    }
+
+    this.setState({
+      data: _data,
+      sorting
+    });
   },
 
   render() {
@@ -29,7 +48,11 @@ let App = React.createClass({
       <div className={style.container}>
         <h1>Karanaris C Fantasy</h1>
         <h2>Total {this.state.data.length} albums.</h2>
-        <ul>
+        <ul className={style.sorting}>
+          <li><a href="#" className={this.state.sorting == 'date' ? style.active : ''} onClick={this._sort.bind(this, 'date')}>เรียงตามลำดับที่สร้าง</a></li>
+          <li><a href="#" className={this.state.sorting == 'alpha' ? style.active : ''} onClick={this._sort.bind(this, 'alpha')}>เรียงตามตัวอักษร</a></li>
+        </ul>
+        <ul className={style.data}>
           {this.state.data.map((d, i) => {
             return (
               <li key={i}>
