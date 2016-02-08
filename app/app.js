@@ -31,7 +31,8 @@ const App = React.createClass({
   _sort(sorting, e) {
     e.preventDefault();
 
-    let _data = this.state.dataOri.slice(0, this.state.dataOri.length);
+    // Make a replica of dataOri, so it can be changed without reference.
+    let _data = this.state.dataOri.slice(0);
 
     if (sorting == 'alpha') {
       _data = _data.sort((a, b) => a.title.localeCompare(b.title))
@@ -43,14 +44,24 @@ const App = React.createClass({
     });
   },
 
+  _sortLink(type, text) {
+    return (
+      <a href="#"
+        className={this.state.sorting == type ? style.active : ''}
+        onClick={this._sort.bind(this, type)}>
+        {text}
+      </a>
+    );
+  },
+
   render() {
     return (
       <div className={style.container}>
         <h1>Karanaris C Fantasy</h1>
         <h2>Total {this.state.data.length} albums.</h2>
         <ul className={style.sorting}>
-          <li><a href="#" className={this.state.sorting == 'date' ? style.active : ''} onClick={this._sort.bind(this, 'date')}>เรียงตามลำดับที่สร้าง</a></li>
-          <li><a href="#" className={this.state.sorting == 'alpha' ? style.active : ''} onClick={this._sort.bind(this, 'alpha')}>เรียงตามตัวอักษร</a></li>
+          <li>{this._sortLink('date', 'เรียงตามลำดับที่สร้าง')}</li>
+          <li>{this._sortLink('alpha', 'เรียงตามตัวอักษร')}</li>
           <li><a href="pv49.jpg" target="_blank">ดูตัวอย่างการใช้</a></li>
         </ul>
         <ul className={style.data}>
