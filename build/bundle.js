@@ -156,6 +156,15 @@
 	            { href: '#', className: this.state.sorting == 'alpha' ? _style2.default.active : '', onClick: this._sort.bind(this, 'alpha') },
 	            'เรียงตามตัวอักษร'
 	          )
+	        ),
+	        _react2.default.createElement(
+	          'li',
+	          null,
+	          _react2.default.createElement(
+	            'a',
+	            { href: 'pv49.jpg', target: '_blank' },
+	            'ดูตัวอย่างการใช้'
+	          )
 	        )
 	      ),
 	      _react2.default.createElement(
@@ -210,13 +219,11 @@
 	  }
 	});
 
-	var routes = _react2.default.createElement(
+	_reactDom2.default.render(_react2.default.createElement(
 	  _reactRouter.Router,
 	  { history: createBrowserHistory() },
 	  _react2.default.createElement(_reactRouter.Route, { path: '/', component: App })
-	);
-
-	_reactDom2.default.render(routes, document.querySelector('#main'));
+	), document.querySelector('#main'));
 
 /***/ },
 /* 2 */

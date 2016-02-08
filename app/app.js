@@ -4,11 +4,11 @@ import ReactRouter from 'react-router';
 import { Router, Route, Link } from 'react-router';
 import $ from 'jquery';
 import classnames from 'classnames';
-let createBrowserHistory = require('history/lib/createBrowserHistory');
+const createBrowserHistory = require('history/lib/createBrowserHistory');
 
 import style from './../css/style.css';
 
-let App = React.createClass({
+const App = React.createClass({
   getInitialState() {
     return {
       dataOri: [],
@@ -18,14 +18,14 @@ let App = React.createClass({
   },
 
   componentDidMount() {
-    $.get('data.json', (result) => {
-      result = result.filter((a) => a.count.match(/\d+/)[0] > 0);
+    $.get('data.json', result => {
+      result = result.filter(a => a.count.match(/\d+/)[0] > 0);
 
       this.setState({
         dataOri: result,
         data: result
       });
-    })
+    });
   },
 
   _sort(sorting, e) {
@@ -80,10 +80,9 @@ let App = React.createClass({
   }
 });
 
-let routes = (
+ReactDOM.render(
   <Router history={createBrowserHistory()}>
     <Route path='/' component={App} />
-  </Router>
+  </Router>,
+  document.querySelector('#main')
 );
-
-ReactDOM.render(routes, document.querySelector('#main'));
