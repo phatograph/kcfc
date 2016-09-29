@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import ReactRouter from 'react-router';
 import { Router, Route, Link } from 'react-router';
 import $ from 'jquery';
-import classnames from 'classnames';
 const createBrowserHistory = require('history/lib/createBrowserHistory');
 
 import style from './../css/style.css';
