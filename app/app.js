@@ -3,9 +3,17 @@ import ReactDOM from 'react-dom';
 import ReactRouter from 'react-router';
 import { Router, Route, Link } from 'react-router';
 import $ from 'jquery';
-const createBrowserHistory = require('history/lib/createBrowserHistory');
-
+import createBrowserHistory from 'history/lib/createBrowserHistory';
 import style from './../css/style.css';
+// TODO Add Immutable
+
+const SortLink = ({ type, children }) => (
+  <a href="#"
+    className
+    onClick={(e) => e.preventDefault()}>
+    {children}
+  </a>
+);
 
 const App = React.createClass({
   getInitialState() {
@@ -43,24 +51,14 @@ const App = React.createClass({
     });
   },
 
-  _sortLink(type, text) {
-    return (
-      <a href="#"
-        className={this.state.sorting == type ? style.active : ''}
-        onClick={this._sort.bind(this, type)}>
-        {text}
-      </a>
-    );
-  },
-
   render() {
     return (
       <div className={style.container}>
         <h1>Karanaris C Fantasy</h1>
         <h2>Total {this.state.data.length} albums.</h2>
         <ul className={style.sorting}>
-          <li>{this._sortLink('date', 'เรียงตามลำดับที่สร้าง')}</li>
-          <li>{this._sortLink('alpha', 'เรียงตามตัวอักษร')}</li>
+          <li><SortLink type="date">เรียงตามลำดับที่สร้าง</SortLink></li>
+          <li><SortLink type="alpha">เรียงตามตัวอักษร</SortLink></li>
           <li><a href="pv49.jpg" target="_blank">ดูตัวอย่างการใช้</a></li>
         </ul>
         <ul className={style.data}>
